@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VidyaSetu — SRTMUN Student Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="seal"><span>VS</span></div>
+      <div class="brand-name">Vidya<span>Setu</span></div>
+    </div>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="index.html#colleges">Communities</a>
+      <a href="index.html#resources">Resources</a>
+      <a href="index.html#mentorship">Mentorship</a>
+      <a href="scholarship.html">Support a Student</a>
+    </div>
+    <div class="auth-slot" id="auth-slot"></div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Built for SRTMUN, Nanded</div>
+    <h1>One <span class="accent">community</span>, all 370 colleges.<br>Papers, mentors &amp; support in one place.</h1>
+    <p class="lead">VidyaSetu connects every affiliated college under Swami Ramanand Teerth Marathwada University — PYQs, syllabus, exam dates, senior mentorship, and a way for anyone to fund a fellow student's laptop or fees.</p>
+    <div class="cta-row">
+      <button class="btn btn-primary" onclick="scrollToId('colleges')">Join your college community</button>
+      <a href="scholarship.html" class="btn btn-ghost">Support a student →</a>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b>370</b><span>Affiliated colleges</span></div>
+      <div class="stat"><b>5</b><span>Districts covered</span></div>
+      <div class="stat"><b id="stat-resources">—</b><span>Resources shared</span></div>
+      <div class="stat"><b id="stat-needs">—</b><span>Students supported</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="block" id="colleges">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>College communities</h2>
+      <div class="section-tag">// 370 affiliated colleges, 5 districts</div>
+    </div>
+    <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+      <input type="text" id="college-search" placeholder="Search your college or district..." style="flex:1; min-width:220px; margin-bottom:0;">
+      <select id="district-filter" style="width:auto; margin-bottom:0;">
+        <option value="">All districts</option>
+      </select>
+    </div>
+    <div class="grid" id="college-grid"></div>
+    <div style="text-align:center; margin-top:20px;">
+      <span class="section-tag" id="college-count"></span>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="resources">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Resource hub</h2>
+      <div class="section-tag">// PYQs · syllabus · notes</div>
+    </div>
+    <div class="grid" id="resource-grid"></div>
+  </div>
+</section>
+
+<section class="block" id="announcements">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Announcements</h2>
+      <div class="section-tag">// university-wide</div>
+    </div>
+    <div class="card announce-list" id="announce-list"></div>
+  </div>
+</section>
+
+<section class="block" id="mentorship" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Mentorship &amp; discussion</h2>
+      <div class="section-tag">// seniors who've been there</div>
+    </div>
+    <div class="grid" id="mentor-grid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="seal"><span>VS</span></div>
+  <div>VidyaSetu — built by students of SRTMUN, for students of SRTMUN.</div>
+  <div style="margin-top:6px; font-family:'JetBrains Mono',monospace; font-size:11px;" id="db-status"></div>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="auth-overlay">
+  <div class="modal">
+    <span class="modal-close" onclick="closeAuthModal()">✕</span>
+    <h3>Join VidyaSetu</h3>
+    <p class="sub">Free for every student under SRTMUN.</p>
+    <div class="tab-row">
+      <button class="tab-btn active" id="tab-login" onclick="switchAuthTab('login')">Login</button>
+      <button class="tab-btn" id="tab-signup" onclick="switchAuthTab('signup')">Sign up</button>
+    </div>
+    <div id="login-form">
+      <label>Email</label>
+      <input type="email" id="li-email" placeholder="you@example.com">
+      <button class="submit-btn" onclick="doLogin()">Login</button>
+    </div>
+    <div id="signup-form" style="display:none;">
+      <label>Full name</label>
+      <input type="text" id="su-name" placeholder="Your name">
+      <label>College</label>
+      <input type="text" id="su-college" placeholder="Your college name">
+      <label>Email</label>
+      <input type="email" id="su-email" placeholder="you@example.com">
+      <button class="submit-btn" onclick="doSignup()">Create account</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/home.js"></script>
+<script>
+  document.getElementById('db-status').textContent = DB_CONNECTED
+    ? '● Connected to live database'
+    : '○ Running on demo data — connect Supabase to go live';
+  fetchResources().then(r => document.getElementById('stat-resources').textContent = r.length);
+  fetchNeeds().then(n => document.getElementById('stat-needs').textContent = n.filter(x=>x.supported).length || n.length);
+</script>
+</body>
+</html>

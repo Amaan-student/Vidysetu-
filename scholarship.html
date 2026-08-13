@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support a Student — VidyaSetu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="seal"><span>VS</span></div>
+      <div class="brand-name">Vidya<span>Setu</span></div>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#colleges">Communities</a>
+      <a href="index.html#resources">Resources</a>
+      <a href="index.html#mentorship">Mentorship</a>
+      <a href="scholarship.html" class="active">Support a Student</a>
+    </div>
+    <div class="auth-slot" id="auth-slot"></div>
+  </div>
+</nav>
+
+<div class="wrap page-head">
+  <div class="eyebrow">The Avinash Module</div>
+  <h1 style="font-size:34px; margin-bottom:10px;">Support a student</h1>
+  <p style="color:var(--paper-dim); font-size:14px; max-width:600px;">
+    Some students can't afford a laptop, course fee, or internet access. Post a genuine need, or fund someone else's — no amount is too small.
+  </p>
+</div>
+
+<section class="block" style="border-bottom:none; padding-top:32px;">
+  <div class="wrap">
+    <div class="scholar-wrap">
+      <div class="form-card">
+        <h3>Post your need</h3>
+        <div id="form-msg" class="form-msg"></div>
+        <label>What do you need?</label>
+        <select id="f-need">
+          <option>Laptop</option>
+          <option>Course / Exam Fee</option>
+          <option>Books &amp; Study Material</option>
+          <option>Internet Access</option>
+        </select>
+        <label>Tell your story (rough is fine)</label>
+        <textarea id="f-story" placeholder="e.g. mujhe coding sikhni hai but laptop nahi hai ghar mein..."></textarea>
+        <div class="ai-note">✦ AI will polish this into a clear, honest request</div>
+        <button class="submit-btn" onclick="postNeed()">Post request</button>
+        <p style="font-size:11px; color:var(--paper-dim); margin-top:12px;">You'll need to sign up first — it's free and takes a few seconds.</p>
+      </div>
+      <div id="need-list"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="seal"><span>VS</span></div>
+  <div>VidyaSetu — built by students of SRTMUN, for students of SRTMUN.</div>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="auth-overlay">
+  <div class="modal">
+    <span class="modal-close" onclick="closeAuthModal()">✕</span>
+    <h3>Join VidyaSetu</h3>
+    <p class="sub">Free for every student under SRTMUN.</p>
+    <div class="tab-row">
+      <button class="tab-btn active" id="tab-login" onclick="switchAuthTab('login')">Login</button>
+      <button class="tab-btn" id="tab-signup" onclick="switchAuthTab('signup')">Sign up</button>
+    </div>
+    <div id="login-form">
+      <label>Email</label>
+      <input type="email" id="li-email" placeholder="you@example.com">
+      <button class="submit-btn" onclick="doLogin()">Login</button>
+    </div>
+    <div id="signup-form" style="display:none;">
+      <label>Full name</label>
+      <input type="text" id="su-name" placeholder="Your name">
+      <label>College</label>
+      <input type="text" id="su-college" placeholder="Your college name">
+      <label>Email</label>
+      <input type="email" id="su-email" placeholder="you@example.com">
+      <button class="submit-btn" onclick="doSignup()">Create account</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/scholarship.js"></script>
+</body>
+</html>
