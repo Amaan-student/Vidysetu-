@@ -175,6 +175,7 @@ function switchAuthTab(tab){
 }
 
 async function doSignup(){
+  alert('doSignup fired'); // TEMP DEBUG — we'll remove this once confirmed
   const name = document.getElementById('su-name').value.trim();
   const college = document.getElementById('su-college').value.trim();
   const email = document.getElementById('su-email').value.trim();
