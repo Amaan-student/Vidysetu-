@@ -66,52 +66,64 @@ let currentUser = null; // { id, name, college }
 // ====================================================================
 
 async function fetchColleges(){
-  if (DB_CONNECTED) {
-    const { data, error } = await supabase.from('colleges').select('*').order('name');
-    if (!error && data) return data;
-  }
+  try {
+    if (DB_CONNECTED) {
+      const { data, error } = await supabase.from('colleges').select('*').order('name');
+      if (!error && data && data.length) return data;
+    }
+  } catch (e) { console.error('fetchColleges failed, using demo data:', e); }
   return COLLEGE_SEED.map((c, i) => ({ ...c, id: i }));
 }
 
 async function fetchResources(){
-  if (DB_CONNECTED) {
-    const { data, error } = await supabase.from('resources').select('*').order('created_at', { ascending:false });
-    if (!error && data) return data;
-  }
+  try {
+    if (DB_CONNECTED) {
+      const { data, error } = await supabase.from('resources').select('*').order('created_at', { ascending:false });
+      if (!error && data && data.length) return data;
+    }
+  } catch (e) { console.error('fetchResources failed, using demo data:', e); }
   return RESOURCES;
 }
 
 async function fetchAnnouncements(){
-  if (DB_CONNECTED) {
-    const { data, error } = await supabase.from('announcements').select('*').order('date', { ascending:true });
-    if (!error && data) return data;
-  }
+  try {
+    if (DB_CONNECTED) {
+      const { data, error } = await supabase.from('announcements').select('*').order('date', { ascending:true });
+      if (!error && data && data.length) return data;
+    }
+  } catch (e) { console.error('fetchAnnouncements failed, using demo data:', e); }
   return ANNOUNCEMENTS;
 }
 
 async function fetchNeeds(){
-  if (DB_CONNECTED) {
-    const { data, error } = await supabase.from('scholarship_requests').select('*').order('created_at', { ascending:false });
-    if (!error && data) return data;
-  }
+  try {
+    if (DB_CONNECTED) {
+      const { data, error } = await supabase.from('scholarship_requests').select('*').order('created_at', { ascending:false });
+      if (!error && data && data.length) return data;
+    }
+  } catch (e) { console.error('fetchNeeds failed, using demo data:', e); }
   return DEMO_NEEDS;
 }
 
 async function insertNeed(need){
-  if (DB_CONNECTED) {
-    const { data, error } = await supabase.from('scholarship_requests').insert([need]).select();
-    if (!error && data) return data[0];
-  }
+  try {
+    if (DB_CONNECTED) {
+      const { data, error } = await supabase.from('scholarship_requests').insert([need]).select();
+      if (!error && data) return data[0];
+    }
+  } catch (e) { console.error('insertNeed failed, using local fallback:', e); }
   const newNeed = { ...need, id: Date.now(), raised: 0, supported:false };
   DEMO_NEEDS.unshift(newNeed);
   return newNeed;
 }
 
 async function pledgeSupport(requestId, donorName){
-  if (DB_CONNECTED) {
-    await supabase.from('support_pledges').insert([{ request_id: requestId, donor_name: donorName }]);
-    return;
-  }
+  try {
+    if (DB_CONNECTED) {
+      await supabase.from('support_pledges').insert([{ request_id: requestId, donor_name: donorName }]);
+      return;
+    }
+  } catch (e) { console.error('pledgeSupport failed, using local fallback:', e); }
   const n = DEMO_NEEDS.find(x => x.id === requestId);
   if (n) { n.supported = true; n.raised = Math.min(100, n.raised + Math.floor(Math.random()*15)+15); }
 }
