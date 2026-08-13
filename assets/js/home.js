@@ -114,13 +114,18 @@ function renderMentors(){
 async function initHomePage(){
   renderAuthSlot();
   initDistrictFilter();
-  ALL_COLLEGES = await fetchColleges();
+  try {
+    ALL_COLLEGES = await fetchColleges();
+  } catch (e) {
+    console.error('College load failed:', e);
+    ALL_COLLEGES = COLLEGE_SEED.map((c, i) => ({ ...c, id: i }));
+  }
   renderCollegeCards(ALL_COLLEGES);
   document.getElementById('college-search').addEventListener('input', applyCollegeFilters);
   document.getElementById('district-filter').addEventListener('change', applyCollegeFilters);
-  renderResources();
-  renderAnnouncements();
-  renderMentors();
+  try { await renderResources(); } catch(e) { console.error('Resources render failed:', e); }
+  try { await renderAnnouncements(); } catch(e) { console.error('Announcements render failed:', e); }
+  try { renderMentors(); } catch(e) { console.error('Mentors render failed:', e); }
 }
 
 document.addEventListener('DOMContentLoaded', initHomePage);
