@@ -3,7 +3,7 @@
 // You'll get these from: Supabase Dashboard → Project Settings → API
 // ====================================================================
 const SUPABASE_URL = "https://tgzyjvlgcotpwgbzrkez.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_KBvSTiDu8QxLInbvhoV_jQ_h-m-2EOv";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRnenlqdmxnY290cHdnYnpya2V6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1ODc4ODEsImV4cCI6MjEwMjE2Mzg4MX0.R_KP07wJffKopmVA2BQqW9Px_vc9vGF1DjkGl02cFXY";
 
 let supabase = null;
 let DB_CONNECTED = false;
